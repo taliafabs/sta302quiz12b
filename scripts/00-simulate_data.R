@@ -9,7 +9,7 @@
 # Pre-requisites: None
 
 
-#### Workspace setup ####
+#### Work space setup ####
 # install.packages("arrow")
 library(tidyverse)
 library(janitor)
@@ -36,6 +36,7 @@ sydney_hospitals <- c("Royal Prince Alfred",
 
 #### Simulate data ####
 simulated_cancer_data <- tibble(
+  patient_died <- sample(1:0, size=num_obs, replace=TRUE),
   # year
   year <- sample(2003:2023, size=num_obs, replace=TRUE),
   # age
