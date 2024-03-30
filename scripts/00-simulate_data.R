@@ -36,9 +36,9 @@ sydney_hospitals <- c("Royal Prince Alfred",
 
 #### Simulate data ####
 simulated_cancer_data <- tibble(
-  patient_died <- sample(1:0, size=num_obs, replace=TRUE),
+  patient_died=sample(1:0, size=num_obs, replace=TRUE),
   # year
-  year <- sample(2003:2023, size=num_obs, replace=TRUE),
+  year=sample(2003:2023, size=num_obs, replace=TRUE),
   # age
   age = sample(0:99, size=num_obs, replace=TRUE),
   # hospital
@@ -48,7 +48,7 @@ simulated_cancer_data <- tibble(
 )
 
 # make hospital and type of cancer data 
-simulated_cancer_data$race <- as.factor(simulated_cancer_data$hospital)
+simulated_cancer_data$hospital <- as.factor(simulated_cancer_data$hospital)
 simulated_cancer_data$type <- as.factor(simulated_cancer_data$type)
 
 #### Save data ####
@@ -56,6 +56,8 @@ simulated_cancer_data$type <- as.factor(simulated_cancer_data$type)
 # save as a parquet under data/simulated_data
 write_parquet(simulated_cancer_data, 
               "data/simulated_cancer_data.parquet")
+
+
 
 
 
