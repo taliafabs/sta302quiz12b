@@ -1,9 +1,8 @@
 #### Preamble ####
-# Purpose: Simulate a data set where the chance that a cancer patient in one of 
-# the 5 largest hospitals in Sydney, Australia
-# dies depends on the hospital they were treated at, their age, the year, and the type of cancer
-# Author: Talia Fabregas, Fatimah Yunusa, Aamishi Sandeep
-# Date: 29 March 2024
+# Purpose: Simulate a survey data set where political preference (Democrat or Republican) 
+# depends on age group, gender, income group, and highest level of education
+# Author: Talia Fabregas
+# Date: 1 April 2024
 # Contact: talia.fabregas@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: None
@@ -15,47 +14,53 @@ library(tidyverse)
 library(janitor)
 library(arrow)
 
+#### Simulate data ####
 # set seed for reproducibility
 set.seed(853)
 
 # set the number of observations to 1000
 num_obs <- 10000
 
-cancer_types <- c( 
-  "Lung", "Brain", "Breast", "Bone", "Blood", "Pancreatic", 
-  "Liver", "Leukemia", "Lymphoma", "Skin", "Ovarian"
+age_groups <- c("18-29", 
+                "30-44",
+                "45-59",
+                "60+")
+
+income_groups <- c("0-10,000", 
+                   "10,000-40,000",
+                   "40,000-60,000",
+                   "60,000-80,000",
+                   "80,000-100,000",
+                   "100,000-150,000",
+                   "150,000-200,000",
+                   "200,000-250,000",
+                   "250,000-300,000",
+                   ">300,000")
+
+genders <- c("male", "female", "non binary")
+
+education_levels <- c("No HS",
+                             "High school graduate",
+                             "Some college",
+                             "2-year",
+                             "4-year",
+                             "Post-grad")
+
+simulated_data <- tibble(
+  support_democrat=sample(0:1, size=num_obs, replace=TRUE),
+  age_group=sample(age_groups, size=num_obs, replace=TRUE),
+  gender=sample(genders, size=num_obs, replace=TRUE),
+  income_group=sample(income_groups, size=num_obs, replace=TRUE),
+  highest_education=sample(education_levels, size=num_obs, replace=TRUE)
 )
 
-sydney_hospitals <- c("Royal Prince Alfred",
-                      "St. Vincent's Hospital",
-                      "Concord Repatriation Hospital",
-                      "Westmead Hospital",
-                      "Sydney Adventist")
 
-
-
-#### Simulate data ####
-simulated_cancer_data <- tibble(
-  patient_died=sample(1:0, size=num_obs, replace=TRUE),
-  # year
-  year=sample(2003:2023, size=num_obs, replace=TRUE),
-  # age
-  age = sample(0:99, size=num_obs, replace=TRUE),
-  # hospital
-  hospital = sample(sydney_hospitals, size = num_obs, replace = TRUE),
-  # type
-  type = sample(cancer_types, size = num_obs, replace = TRUE)
-)
-
-# make hospital and type of cancer data 
-simulated_cancer_data$hospital <- as.factor(simulated_cancer_data$hospital)
-simulated_cancer_data$type <- as.factor(simulated_cancer_data$type)
 
 #### Save data ####
 
 # save as a parquet under data/simulated_data
-write_parquet(simulated_cancer_data, 
-              "data/simulated_cancer_data.parquet")
+write_parquet(simulated_data, 
+              "data/simulated_data.parquet")
 
 
 

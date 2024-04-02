@@ -14,63 +14,72 @@ library(testthat)
 library(arrow)
 
 # read in the simulated data
-data <- read_parquet("data/simulated_cancer_data.parquet")
+data <- read_parquet("data/simulated_data.parquet")
 
 #### Test data ####
 
-# Test that the patient_died variable is equal to 1 (patient died) or 0 (patient lived)
-if(all(data$patient_died == 1 |data$patient_died==0)){
-  "The simulated patient_died binary values are all 1 or 0"
+# Test that the vote_biden is equal to 1 or 0 for every observation
+# 1 if democrat 0 if republican
+if(all(data$support_democrat == 1 |data$support_democrat==0)){
+  "The survey support_democrat binary values are all 1 or 0"
 } else{
-  "At least one of the patient_died values in the survey data is not 1 or 0"
+  "At least one of the support_democrat values in the survey data is not 1 or 0"
 }
 
-# Test that every observation in the simulated data is age 0 to 99
-if(all(data$age >= 0)){
-  "All individuals in the simulated data have a non-negative integer age"
-}else{
-  "At least 1 individual in simulated data has a negative age. Problem!"
-}
-if(all(data$age <= 99)){
-  "All individuals in simulated data are age 99 or younger as expected"
-}else{
-  "At least one individual in the simulated data is 100 or older"
-}
+# Test that every age group falls in the expected age groups
+age_groups <- c("18-29", 
+                "30-44",
+                "45-59",
+                "60+")
 
-
-# Test that hospitals are all one of the 5 largest in sydney
-
-sydney_hospitals <- c("Royal Prince Alfred",
-                      "St. Vincent's Hospital",
-                      "Concord Repatriation Hospital",
-                      "Westmead Hospital",
-                      "Sydney Adventist")
-
-if(all(unique(data$hospital) %in% sydney_hospitals)){
-  "The hospitals in the simulated data set match the 5 largest hospitals in Sydney"
+if(all(unique(data$age_group) %in% age_groups)){
+  "The simulated data age groups match the expected age groups"
 } else{
-  "Not all of the hospitals in the simulated data set are among the 5 largest in Sydney"
+  "Not all of the age groups match the expected age groups"
 }
 
-# Test that every observation in the simulated data set is between 2003 and 2023
-if(all(unique(data$year)) >= 2003 & all(unique(data$year)) <= 2023){
-  "The simulated data set contains only patients from the last 20 years"
+
+# Test that every gender is male, female, or non binary
+genders <- c("male", "female", "non binary")
+
+if(all(unique(data$gender) %in% genders)){
+  "The simulated data genders match the expected genders"
 } else{
-  "At least 1 observation in the simulated data set is not from the last 20 years"
+  "Not all of the genders match the expected genders"
 }
 
-# Test that the types of cancer in the simulated data set are correct
-urban_levels <- c("urban", "rural")
+# Test that the income groups are what we expect
+income_groups <- c("0-10,000", 
+                   "10,000-40,000",
+                   "40,000-60,000",
+                   "60,000-80,000",
+                   "80,000-100,000",
+                   "100,000-150,000",
+                   "150,000-200,000",
+                   "200,000-250,000",
+                   "250,000-300,000",
+                   ">300,000")
 
-# obviously more types of cancer exist, this simplification is for the sake of 
-# sta302 quiz12c
-cancer_types <- c( 
-  "Lung", "Brain", "Breast", "Bone", "Blood", "Pancreatic", 
-  "Liver", "Leukemia", "Lymphoma", "Skin", "Ovarian"
-)
-
-if(all(unique(data$type) %in% cancer_types)){
-  "The simulated cancer types match the expected ones"
-}else{
-  "Not all of the simulation cancer type values match the expected cancer types"
+if(all(unique(data$income_group) %in% income_groups)){
+  "The simulated data income groups all match the expected income groups"
+} else{
+  "Not all of the income groups match the expected income groups groups"
 }
+
+# Test that the values of education_level are what we expect
+
+education_levels <- c("No HS",
+                      "High school graduate",
+                      "Some college",
+                      "2-year",
+                      "4-year",
+                      "Post-grad")
+
+if(all(unique(data$income_group) %in% income_groups)){
+  "The simulated data  education levels all match the expected education levels"
+} else{
+  "Not all of the education levels match the expected education levels"
+}
+
+
+
